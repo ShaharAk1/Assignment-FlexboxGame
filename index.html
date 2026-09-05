@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <title>Flexbox Game Assignment</title>
+</head>
+<body>
+    <div class="starfield"></div>
+
+    <header class="topbar">
+        <h1 class="topbar__title">Flex<span>Orbit</span></h1>
+        <div class="topbar__meta">
+            <span class="level-indicator">Level 1</span>
+            <span class="difficulty-badge difficulty-badge--easy">Easy</span>
+        </div>
+    </header>
+
+    <main class="layout">
+        <aside class="left-panel">
+            <section class="instructions">
+                <h2>Level 1: Centering</h2>
+                <p>
+                    The planets are stuck in the corner of their orbit container.
+                    Use <code>justify-content</code> to center them along the
+                    main axis and bring them into alignment.
+                </p>
+            </section>
+
+            <section class="editor-pane">
+                <div class="editor-pane__header">
+                    <span class="editor-pane__dot editor-pane__dot--red"></span>
+                    <span class="editor-pane__dot editor-pane__dot--yellow"></span>
+                    <span class="editor-pane__dot editor-pane__dot--green"></span>
+                    <span class="editor-pane__filename">style.css</span>
+                </div>
+                <textarea
+                    class="editor-pane__textarea"
+                    spellcheck="false"
+                    placeholder=".orbit {&#10;  display: flex;&#10;  justify-content: center;&#10;}"
+                ></textarea>
+            </section>
+        </aside>
+
+        <section class="visualization">
+            <div class="orbit">
+                <div class="planet planet--sm planet--teal"></div>
+                <div class="planet planet--lg planet--amber"></div>
+                <div class="planet planet--md planet--indigo"></div>
+                <div class="planet planet--sm planet--rose"></div>
+                <div class="planet planet--md planet--teal"></div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
