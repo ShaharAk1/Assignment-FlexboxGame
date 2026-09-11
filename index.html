@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FlexOrbit — a small browser game for learning CSS Flexbox.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <title>Flexbox Game Assignment</title>
+
+    <!-- Loaded in dependency order. `defer` keeps the order AND waits for the DOM. -->
+    <script src="js/Level.js" defer></script>   <!-- the Level class            -->
+    <script src="js/Game.js" defer></script>    <!-- the Game (main) class      -->
+    <script src="js/levels.js" defer></script>  <!-- the level definitions      -->
+    <script src="script.js" defer></script>     <!-- starts the game            -->
+
+    <title>FlexOrbit — Flexbox Game</title>
 </head>
 <body>
     <div class="starfield"></div>
@@ -16,22 +23,25 @@
     <header class="topbar">
         <h1 class="topbar__title">Flex<span>Orbit</span></h1>
         <div class="topbar__meta">
-            <span class="level-indicator">Level 1</span>
-            <span class="difficulty-badge difficulty-badge--easy">Easy</span>
+            <!-- Filled in by Game.render(): "Level 1 of 6" -->
+            <span class="level-indicator" id="level-indicator">Level 1</span>
+            <span class="difficulty-badge difficulty-badge--easy" id="difficulty-badge">easy</span>
+            <span class="score-chip" id="score">0 pts</span>
         </div>
     </header>
 
     <main class="layout">
         <aside class="left-panel">
+            <!-- Level picker: one chip per level, built by Game.renderLevelNav().
+                 Finished levels stay clickable so the player can replay them. -->
+            <nav class="level-nav" id="level-nav" aria-label="Level selection"></nav>
+
             <section class="instructions">
-                <h2>Level 1: Centering</h2>
-                <p>
-                    The planets are stuck in the corner of their orbit container.
-                    Use <code>justify-content</code> to center them along the
-                    main axis and bring them into alignment.
-                </p>
+                <h2 id="level-title">Loading…</h2>
+                <p id="level-instruction"></p>
             </section>
 
+            <!-- The "editor": a style.css rule whose values are real <select> elements. -->
             <section class="editor-pane">
                 <div class="editor-pane__header">
                     <span class="editor-pane__dot editor-pane__dot--red"></span>
@@ -39,36 +49,26 @@
                     <span class="editor-pane__dot editor-pane__dot--green"></span>
                     <span class="editor-pane__filename">style.css</span>
                 </div>
-                <textarea
-                    class="editor-pane__textarea"
-                    spellcheck="false"
-                    placeholder=".orbit {&#10;  display: flex;&#10;  justify-content: center;&#10;}"
-                ></textarea>
+
+                <div class="editor-pane__code" id="controls"></div>
+
+                <div class="editor-pane__footer">
+                    <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+                    <p class="attempts" id="attempts">No mistakes yet</p>
+                    <div class="actions">
+                        <button type="button" class="btn btn--primary" id="btn-check">Check solution</button>
+                        <button type="button" class="btn" id="btn-reset">Reset level</button>
+                        <button type="button" class="btn btn--next" id="btn-next" hidden>Next level →</button>
+                    </div>
+                </div>
             </section>
         </aside>
 
-        <section class="visualization">
-            <div class="orbit">
-                <div class="rocket-line rocket-line--vertical rocket-line--left" aria-hidden="true">
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                </div>
-                <div class="rocket-line rocket-line--vertical rocket-line--right" aria-hidden="true">
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                    <span class="rocket"></span>
-                </div>
-
-                <div class="planet planet--sm planet--teal"></div>
-                <div class="planet planet--lg planet--amber"></div>
-                <div class="planet planet--md planet--indigo"></div>
-                <div class="planet planet--sm planet--rose"></div>
-                <div class="planet planet--md planet--teal"></div>
+        <section class="visualization" id="visualization">
+            <!-- .stage only reserves the on-screen (scaled) space; #board keeps its
+                 fixed 800x500 layout size on every screen so the solutions never change. -->
+            <div class="stage" id="stage">
+                <div class="orbit" id="board"></div>
             </div>
         </section>
     </main>
