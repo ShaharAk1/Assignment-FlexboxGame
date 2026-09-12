@@ -3,29 +3,21 @@
  * -----------------------------------------------------------------------------
  * This is the ONLY file you need to touch to add, remove or re-order levels.
  * Each entry is a `new Level({...})`; see js/Level.js for the full documentation
- * of every option, and the TEMPLATE at the bottom of this file for a copy/paste
- * starting point.
+ * of every option.
  *
- * Two worked examples are provided:
- *   1. an easy one that combines `display` + `justify-content`
- *   2. a medium one that combines three properties at once
+ * The 6 levels ramp up gradually and, between them, combine every Flexbox
+ * property the assignment requires (`display`, `flex-direction`, `flex-wrap`,
+ * `justify-content`, `align-items`, `align-content`) without ever repeating the
+ * same value pair:
  *
- * -----------------------------------------------------------------------------
- * TODO — what is still missing for the assignment (status: 2 of 6 levels done):
+ *   1. Docking Bay        (easy)        display + justify-content
+ *   2. Satellite Row      (easy)        justify-content only (space-between)
+ *   3. Reverse Thrusters  (medium)      flex-direction only (row-reverse)
+ *   4. Launch Column      (medium)      flex-direction + justify-content + align-items
+ *   5. Asteroid Belt      (medium-hard) flex-wrap + justify-content + align-content
+ *   6. Reentry Formation  (hard)        flex-direction + justify-content + align-items
  *
- *   TODO: Write 4 more levels so the game has at least 6 in total.
- *   TODO: At least ONE level must use `flex-wrap`. None does yet — the TEMPLATE
- *         at the bottom of this file is already written as that level; uncomment
- *         it, tune the wording and it counts.
- *   TODO: At least THREE levels must need MORE THAN ONE property to solve.
- *         Currently 2 qualify ('docking-bay' and 'launch-column'), so at least
- *         one more combined level is required.
- *   TODO: Keep the tasks varied — the assignment explicitly forbids levels that
- *         only differ by `center` vs `flex-start`. Ideas not used yet:
- *         space-between / space-around / space-evenly, row-reverse,
- *         column-reverse, wrap-reverse, align-content.
- *   TODO: Play every new level once and confirm the instruction really describes
- *         the arrangement its `solution` produces.
+ * Levels 1, 4, 5 and 6 all require more than one property to solve.
  * ========================================================================== */
 
 const LEVELS = [
@@ -62,8 +54,6 @@ const LEVELS = [
         solution: { 'display': 'flex',  'justify-content': 'center'     },
 
         // Two vertical rocket lines framing the middle of the board.
-        // TODO: re-check these offsets if you ever change the planet sizes above —
-        //       the corridor should still visually contain the solved row.
         markers: [
             { orientation: 'vertical', side: 'left',  offset: '28%' },
             { orientation: 'vertical', side: 'right', offset: '28%' }
@@ -71,11 +61,77 @@ const LEVELS = [
     }),
 
     /* -------------------------------------------------------------------------
-     * LEVEL 2 — flex-direction + justify-content + align-items
+     * LEVEL 2 — justify-content only
+     * A single-property level, but a value the game has not used yet:
+     * space-between (as opposed to level 1's center).
+     * ---------------------------------------------------------------------- */
+    new Level({
+        id: 'satellite-row',
+        title: 'Satellite Row',
+        difficulty: 'easy',
+
+        instruction:
+            'Mission control wants the relay satellites spread out with ' +
+            '<strong>equal gaps between each one</strong> — but the two end satellites must stay ' +
+            'docked against the bay walls, with no gap at the edges. Adjust ' +
+            '<code>justify-content</code> to divide the empty space evenly between the satellites.',
+
+        hint: 'Only one property to change here — think about how left-over space can be split ' +
+              'BETWEEN the items instead of around them.',
+
+        items: [
+            { size: 'md', color: 'teal'   },
+            { size: 'sm', color: 'amber'  },
+            { size: 'lg', color: 'indigo' },
+            { size: 'sm', color: 'rose'   },
+            { size: 'md', color: 'teal'   }
+        ],
+
+        controls: ['justify-content'],
+        defaults: { 'justify-content': 'flex-start' },
+        solution: { 'justify-content': 'space-between' },
+
+        // The docking walls: right at the board's edges.
+        markers: [
+            { orientation: 'vertical', side: 'left',  offset: '0' },
+            { orientation: 'vertical', side: 'right', offset: '0' }
+        ]
+    }),
+
+    /* -------------------------------------------------------------------------
+     * LEVEL 3 — flex-direction only
+     * Another single-property level: row-reverse mirrors the row. Solvable by
+     * eye because every planet is a different size/colour, so the reversed
+     * order is clearly visible without needing rocket markers.
+     * ---------------------------------------------------------------------- */
+    new Level({
+        id: 'reverse-thrusters',
+        title: 'Reverse Thrusters',
+        difficulty: 'medium',
+
+        instruction:
+            'For re-entry the fleet has to fly in <strong>reverse formation</strong>: the small teal ' +
+            'scout, currently leading on the left, must end up at the back on the right — with the ' +
+            'whole line-up mirrored. Nothing else about the row should change.',
+
+        hint: 'The items are still in a row; only the direction they are read in needs to flip.',
+
+        items: [
+            { size: 'sm', color: 'teal'   },
+            { size: 'md', color: 'amber'  },
+            { size: 'lg', color: 'indigo' },
+            { size: 'md', color: 'rose'   }
+        ],
+
+        controls: ['flex-direction'],
+        defaults: { 'flex-direction': 'row' },
+        solution: { 'flex-direction': 'row-reverse' }
+    }),
+
+    /* -------------------------------------------------------------------------
+     * LEVEL 4 — flex-direction + justify-content + align-items
      * A three-property level: the axes swap, so `justify-content` now works
-     * vertically and `align-items` horizontally. This is exactly the kind of
-     * combined level the assignment asks for ("at least three levels must need
-     * more than one property").
+     * vertically and `align-items` horizontally.
      * ---------------------------------------------------------------------- */
     new Level({
         id: 'launch-column',
@@ -116,42 +172,99 @@ const LEVELS = [
             { orientation: 'vertical',   side: 'left',   offset: '40%' },
             { orientation: 'vertical',   side: 'right',  offset: '40%' }
         ]
-    })
+    }),
 
     /* -------------------------------------------------------------------------
-     * TEMPLATE — copy this block, uncomment it and fill it in to add a level.
-     * (Remember the comma after the previous level!)
-     *
-     * The example below is a flex-wrap level: ten large planets cannot fit on a
-     * single 800px-wide row, so they only arrange themselves properly once the
-     * player allows them to wrap.
+     * LEVEL 5 — flex-wrap + justify-content + align-content
+     * Ten large planets cannot fit on a single 800px-wide row, so they only
+     * arrange themselves properly once the player allows them to wrap. Once
+     * there are two lines, align-content becomes meaningful too: it decides
+     * how the lines themselves (not the planets within a line) are spaced
+     * along the cross axis.
      * ---------------------------------------------------------------------- */
-    // ,
-    // new Level({
-    //     id: 'asteroid-belt',            // unique + never reused (progress is saved by id)
-    //     title: 'Asteroid Belt',
-    //     difficulty: 'hard',             // 'easy' | 'medium' | 'hard'
-    //
-    //     instruction:
-    //         'Too many asteroids for one orbit! Let them <strong>wrap onto a second line</strong> ' +
-    //         'and spread every line evenly across the belt.',
-    //
-    //     hint: 'Nothing can wrap while flex-wrap is nowrap.',
-    //
-    //     items: [                        // size: sm|md|lg, color: teal|amber|indigo|rose
-    //         { size: 'lg', color: 'teal'   }, { size: 'lg', color: 'amber'  },
-    //         { size: 'lg', color: 'indigo' }, { size: 'lg', color: 'rose'   },
-    //         { size: 'lg', color: 'teal'   }, { size: 'lg', color: 'amber'  },
-    //         { size: 'lg', color: 'indigo' }, { size: 'lg', color: 'rose'   },
-    //         { size: 'lg', color: 'teal'   }, { size: 'lg', color: 'amber'  }
-    //     ],
-    //
-    //     controls: ['flex-wrap', 'justify-content'],
-    //     defaults: { 'flex-wrap': 'nowrap', 'justify-content': 'flex-start' },
-    //     solution: { 'flex-wrap': 'wrap',   'justify-content': 'space-between' },
-    //
-    //     markers: [
-    //         { orientation: 'horizontal', side: 'top', offset: '10%' }
-    //     ]
-    // })
+    new Level({
+        id: 'asteroid-belt',
+        title: 'Asteroid Belt',
+        difficulty: 'hard',
+
+        instruction:
+            'Too many asteroids for one lane! Let the belt <strong>wrap onto multiple lines</strong>, ' +
+            'spread each line\'s asteroids evenly from edge to edge, and <strong>centre the whole ' +
+            'stack of lines</strong> vertically between the corridor markers.',
+
+        hint: 'Nothing can wrap while flex-wrap is nowrap — and align-content only does anything ' +
+              'once there is more than one line.',
+
+        items: [
+            { size: 'lg', color: 'teal'   }, { size: 'lg', color: 'amber'  },
+            { size: 'lg', color: 'indigo' }, { size: 'lg', color: 'rose'   },
+            { size: 'lg', color: 'teal'   }, { size: 'lg', color: 'amber'  },
+            { size: 'lg', color: 'indigo' }, { size: 'lg', color: 'rose'   },
+            { size: 'lg', color: 'teal'   }, { size: 'lg', color: 'amber'  }
+        ],
+
+        controls: ['flex-wrap', 'justify-content', 'align-content'],
+        defaults: {
+            'flex-wrap':       'nowrap',
+            'justify-content': 'flex-start',
+            'align-content':   'flex-start'
+        },
+        solution: {
+            'flex-wrap':       'wrap',
+            'justify-content': 'space-between',
+            'align-content':   'center'
+        },
+
+        // A top and bottom corridor line — the wrapped lines should centre between them.
+        markers: [
+            { orientation: 'horizontal', side: 'top',    offset: '12%' },
+            { orientation: 'horizontal', side: 'bottom', offset: '12%' }
+        ]
+    }),
+
+    /* -------------------------------------------------------------------------
+     * LEVEL 6 — flex-direction + justify-content + align-items
+     * The final challenge: a different three-property combination than level 4
+     * (column-reverse instead of column, space-around instead of flex-end,
+     * flex-end instead of center), so it cannot be solved by pattern-matching
+     * the earlier column level.
+     * ---------------------------------------------------------------------- */
+    new Level({
+        id: 'reentry-formation',
+        title: 'Reentry Formation',
+        difficulty: 'hard',
+
+        instruction:
+            'Final approach: the capsules must stack <strong>bottom-to-top in reverse launch ' +
+            'order</strong>, spaced <strong>evenly with room on every side</strong>, and hug the ' +
+            '<strong>right edge</strong> of the module.',
+
+        hint: 'Column-reverse changes which end of the stack fills first; align-items now controls ' +
+              'left/right, not up/down.',
+
+        items: [
+            { size: 'md', color: 'indigo' },
+            { size: 'sm', color: 'rose'   },
+            { size: 'lg', color: 'teal'   },
+            { size: 'md', color: 'amber'  },
+            { size: 'sm', color: 'indigo' }
+        ],
+
+        controls: ['flex-direction', 'justify-content', 'align-items'],
+        defaults: {
+            'flex-direction':  'row',
+            'justify-content': 'flex-start',
+            'align-items':     'flex-start'
+        },
+        solution: {
+            'flex-direction':  'column-reverse',
+            'justify-content': 'space-around',
+            'align-items':     'flex-end'
+        },
+
+        // The right-hand wall the capsules should hug.
+        markers: [
+            { orientation: 'vertical', side: 'right', offset: '12%' }
+        ]
+    })
 ];
