@@ -10,10 +10,9 @@ task asked for.
 Built with plain **HTML + CSS + JavaScript** — no libraries, no build step, no CSS Grid in the
 puzzles, and a single page (levels swap without ever loading a new HTML file).
 
-<!-- TODO before submitting: add the two links the assignment asks for, and your names.
-     - Live game (GitHub Pages): https://<user>.github.io/Assignment-FlexboxGame/
-     - Repository:               https://github.com/<user>/Assignment-FlexboxGame
-     - Submitted by: <name 1>, <name 2>  -->
+- **Live game (GitHub Pages):** <https://shaharak1.github.io/Assignment-FlexboxGame/>
+- **Repository:** <https://github.com/ShaharAk1/Assignment-FlexboxGame>
+- **Submitted by:** Shahar Akiva, <!-- TODO: partner's name -->
 
 ## How to run
 
@@ -123,8 +122,8 @@ that file:
 
 ```js
 new Level({
-    id: 'asteroid-belt',              // unique + permanent (progress is saved by id)
-    title: 'Asteroid Belt',
+    id: 'new-level-id',               // unique + permanent (progress is saved by id)
+    title: 'New Level',
     difficulty: 'hard',               // easy | medium | hard
     instruction: 'Let the asteroids <strong>wrap</strong> onto a second line.',
     items: [{ size: 'lg', color: 'teal' }, /* ... */],   // size: sm|md|lg
@@ -137,6 +136,6 @@ new Level({
 
 Every option is documented in the JSDoc comment on the `Level` constructor in `js/Level.js`.
 
-**Still to do:** the game currently ships 2 levels; the assignment needs **at least 6**, and at
-least one of them must use `flex-wrap`. The open points are listed as `TODO`s at the top of
-`js/levels.js`.
+The game currently ships all **6 required levels**, ramping from easy to hard, with `asteroid-belt`
+covering the mandatory `flex-wrap` requirement and 4 of the 6 levels combining more than one
+Flexbox property.
