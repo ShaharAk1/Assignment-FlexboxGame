@@ -284,13 +284,6 @@ class Level {
  * usable in a level's `controls` array — nothing else has to change.
  * The key order is also the order the declarations are printed in.
  * -------------------------------------------------------------------------- */
-/* TODO (optional, only if you want harder levels): every property here applies to the
- * CONTAINER. Per-ITEM properties (`order`, `align-self`, `flex-grow`) would need the
- * controls to target a single planet instead of the board — a bigger change to Game.js.
- *
- * GOTCHA: do not use `align-items: stretch` as a solution. Our planets have a fixed
- * width/height, so stretching does nothing visible and the level would be unsolvable in
- * practice. It is kept in the list only as a plausible wrong answer. */
 Level.PROPERTIES = {
     'display':         ['block', 'flex', 'inline-flex'],
     'flex-direction':  ['row', 'row-reverse', 'column', 'column-reverse'],

@@ -12,7 +12,7 @@ puzzles, and a single page (levels swap without ever loading a new HTML file).
 
 - **Live game (GitHub Pages):** <https://shaharak1.github.io/Assignment-FlexboxGame/>
 - **Repository:** <https://github.com/ShaharAk1/Assignment-FlexboxGame>
-- **Submitted by:** Shahar Akiva, <!-- TODO: partner's name -->
+- **Submitted by:** Shahar Akiva, David Norman
 
 ## How to run
 
